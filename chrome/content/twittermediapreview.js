@@ -1,22 +1,32 @@
+var jqLoaded = false;
+
 var twitterMediaPreview = function () {
 
     return {
         init : function () {
-            gBrowser.addEventListener("load", function () {
+            gBrowser.addEventListener("load", function (event) {
                 var dcTab = window.top.getBrowser().selectedBrowser.contentWindow.location.href;
-                // Fix to only run on twitter & not https
-                var onTwitter = (dcTab.indexOf('twitter.com')>0);
+                
+				// @TODO: Fix to only run on twitter & not https
+				var onTwitter = (dcTab.indexOf('twitter.com')>0);
+				
+				// Run automatically on twitter
+               
+				if (onTwitter) {
+					if(!jqLoaded)
+					{
+						var jsLoader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Components.interfaces.mozIJSSubScriptLoader);
 
-                // Set up noconflict jQuery so we don't kill other extensions
-                var jsLoader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Components.interfaces.mozIJSSubScriptLoader);
-                // @TODO: Load standard jquery
-                // @TODO: Only load once
-                jsLoader.loadSubScript("chrome://twittermediapreview/content/jquery-1.4.4.min.js");
-                jQuery.noConflict();
+						// @TODO: Only load once
+					 	jsLoader.loadSubScript("chrome://twittermediapreview/content/jquery-1.4.4.min.js");
+					   
+						// Set up noconflict jQuery so we don't kill other extensions
+						jQuery.noConflict();
 
-                // Run automatically on twitter
-                if (onTwitter) {
-                    twitterMediaPreview.run();
+						// Set semaphore so we don't reload it
+						jqLoaded = true;
+					}
+					twitterMediaPreview.run();
                 }
             }, false);
         },
