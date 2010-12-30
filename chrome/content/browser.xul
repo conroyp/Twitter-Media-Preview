@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://twittermediapreview/skin/skin.css" type="text/css"?>
+<!DOCTYPE twittermediapreview SYSTEM "chrome://twittermediapreview/locale/translations.dtd">
+<overlay id="sample" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script src="twittermediapreview.js" />
+
+    <statusbar id="status-bar">
+        <statusbarpanel id="twitter-media-preview-status-bar-icon" class="statusbarpanel-iconic" src="chrome://twittermediapreview/skin/status-bar.png" onclick="twitterMediaPreview.run()" />
+    </statusbar>
+</overlay>
