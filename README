@@ -1,6 +1,8 @@
-Basic Firefox extension to add custom media previews to Twitter.com.
+This extension is for use on the Twitter.com web interface. 
+It extends the default media previews available for twitpic, youtube, yfrog, etc and adds imgur.com.
+It also does partial previews of classified ads on Daft.ie and Adverts.ie.
 
-Currentoly supported:
+Currently supported:
 - imgur.com
 - daft.ie
 - adverts.ie
