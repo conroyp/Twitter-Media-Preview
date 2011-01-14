@@ -54,7 +54,7 @@ var twitterMediaPreview = function () {
                 ,domain:'http://imgur.com'
                 ,matchers:{media:/imgur.com\/([a-zA-Z0-9\.]+)/g}
                     ,process:function(A){
-                            // imgur.com (not sub-domain) doesn't have extension. Guess at jpeg.
+                        // imgur.com (not sub-domain) doesn't have extension. Guess at jpeg.
                         if(this.slug.indexOf('.')<0)
                             this.slug = this.slug + '.jpg';
                         this.data.src=this.slug;
@@ -64,7 +64,7 @@ var twitterMediaPreview = function () {
                     ,render:function(B) {
                         var img = 'http://i.imgur.com/{src}';
                         var A='<div class=\'twitpic\'><a class=\'inline-media-image\' href=\''+img+'\' target=\'_blank\'> <img src=\''+img+'\' /></a></div>';
-                        twitterMediaPreview.jQuery(B, doc).append(window.top.getBrowser().selectedBrowser.contentWindow.wrappedJSObject.twttr.supplant(A,this.data))
+                        twitterMediaPreview.jQuery(B, doc).append(window.top.getBrowser().selectedBrowser.contentWindow.wrappedJSObject.twttr.util.supplant(A,this.data))
                     }
                 }
             );
@@ -107,7 +107,7 @@ var twitterMediaPreview = function () {
                             if(address.length > 0)
                             {
                                 var A='<div class=\'twitpic\'><strong><a class="inline-media-image" href="'+srcUrl+'" target="_blank">'+address+'</a><strong><br />'+details+', '+price+'<br /><a class="inline-media-image" href="'+srcUrl+'" target="_blank"><img src=\''+photo+'\' /></a></div>';
-                                twitterMediaPreview.jQuery(B, doc).append(window.top.getBrowser().selectedBrowser.contentWindow.wrappedJSObject.twttr.supplant(A,dt));
+                                twitterMediaPreview.jQuery(B, doc).append(window.top.getBrowser().selectedBrowser.contentWindow.wrappedJSObject.twttr.util.supplant(A,dt));
                             }
                         }
                     });
@@ -148,7 +148,7 @@ var twitterMediaPreview = function () {
                             if(title.length > 0)
                             {
                                 var A='<div class=\'twitpic\'><strong><a class="inline-media-image" href="'+srcUrl+'" target="_blank">'+title+'</a><strong><br />'+details+'<br /><a class="inline-media-image" href="'+srcUrl+'" target="_blank"><img src="'+photo+'" /></a></div>';
-                                twitterMediaPreview.jQuery(B, doc).append(window.top.getBrowser().selectedBrowser.contentWindow.wrappedJSObject.twttr.supplant(A,dt));
+                                twitterMediaPreview.jQuery(B, doc).append(window.top.getBrowser().selectedBrowser.contentWindow.wrappedJSObject.twttr.util.supplant(A,dt));
                             }
                         }
                     });
