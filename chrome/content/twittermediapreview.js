@@ -153,8 +153,55 @@ var twitterMediaPreview = function () {
                         }
                     });
                 }
-            }
-        );}
+            });
+            
+            // XKCD
+            // 20110121 PC: Added xkcd support
+            // @TODO: Be smarter here and use this.jQuery rather than twittermediapreview.jquery
+            window.top.getBrowser().selectedBrowser.contentWindow.wrappedJSObject.twttr.mediaType('twttr.media.types.Xkcd',
+                {icon:'photo'
+                ,domain:'http://www.xkcd.com/'
+                ,matchers:{media:/xkcd.com\/([0-9]+)/g}
+                ,process:function(A){
+                    this.data.src=this.slug;
+                    this.data.name=this.constructor._name;
+                    A()
+                }
+                ,render:function(B) {
+                    var title = '';
+                    var alt = '';
+                    var photo = '';
+
+                    var dt = this.data;
+
+                    // Mobile site tagged up in a far more parser-friendly way
+                    var srcUrl = 'http://m.xkcd.com/'+this.slug;
+                    var targetUrl = 'http://www.xkcd.com/'+this.slug;
+                    
+                    twitterMediaPreview.jQuery.ajax({
+                        url: srcUrl,
+                        success: function(d) {
+
+                            var dommer = HTMLParser(d);
+
+                            title = twitterMediaPreview.jQuery(dommer).find('#title').text();
+
+                            photo = twitterMediaPreview.jQuery(dommer).find('#comic').attr('src');
+
+                            alt = twitterMediaPreview.jQuery(dommer).find('#comic').attr('title');
+
+                            // If we haven't gotten a title, chances are this is a dead page/non-previewable
+                            if(title.length > 0)
+                            {
+                                var A='<div class=\'twitpic\'><strong><a class="inline-media-image" href="'+targetUrl+'" target="_blank">'+title+'</a><strong><br /><br /><a class="inline-media-image" href="'+targetUrl+'" target="_blank"><img src="'+photo+'" /></a><br /><i>'+alt+'</i></div>';
+
+                                twitterMediaPreview.jQuery(B, doc).append(window.top.getBrowser().selectedBrowser.contentWindow.wrappedJSObject.twttr.util.supplant(A,dt));
+                            }
+                        }
+                    });
+                }
+            });
+        }
     };
 }();
 
