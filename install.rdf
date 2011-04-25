@@ -10,7 +10,7 @@
     <em:description>Add media previews to the Twitter web interface for a variety of media-rich websites.</em:description>
 	<em:homepageURL>https://github.com/conroyp/Twitter-Media-Preview</em:homepageURL>
     <em:targetApplication>
-      <Description>
+      <Description> 
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- Firefox -->
         <em:minVersion>3.5</em:minVersion>
         <em:maxVersion>4.0b8pre</em:maxVersion>
