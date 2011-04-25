@@ -106,7 +106,7 @@ var twitterMediaPreview = function () {
                            // If we haven't gotten an address, chances are this is a dead page/non-previewable
                             if(address.length > 0)
                             {
-                                var A='<div class=\'twitpic\'><strong><a class="inline-media-image" href="'+srcUrl+'" target="_blank">'+address+'</a><strong><br />'+details+', '+price+'<br /><a class="inline-media-image" href="'+srcUrl+'" target="_blank"><img src=\''+photo+'\' /></a></div>';
+                                var A='<div class=\'twitpic\'><strong><a class="inline-media-image" href="'+srcUrl+'" target="_blank">'+address+'</a><br />'+details+', '+price+'<br /><a class="inline-media-image" href="'+srcUrl+'" target="_blank"><img src=\''+photo+'\' /></a></div>';
                                 twitterMediaPreview.jQuery(B, doc).append(window.top.getBrowser().selectedBrowser.contentWindow.wrappedJSObject.twttr.util.supplant(A,dt));
                             }
                         }
@@ -147,14 +147,104 @@ var twitterMediaPreview = function () {
                             // If we haven't gotten a title, chances are this is a dead page/non-previewable
                             if(title.length > 0)
                             {
-                                var A='<div class=\'twitpic\'><strong><a class="inline-media-image" href="'+srcUrl+'" target="_blank">'+title+'</a><strong><br />'+details+'<br /><a class="inline-media-image" href="'+srcUrl+'" target="_blank"><img src="'+photo+'" /></a></div>';
+                                var A='<div class=\'twitpic\'><strong><a class="inline-media-image" href="'+srcUrl+'" target="_blank">'+title+'</a><br />'+details+'<br /><a class="inline-media-image" href="'+srcUrl+'" target="_blank"><img src="'+photo+'" /></a></div>';
                                 twitterMediaPreview.jQuery(B, doc).append(window.top.getBrowser().selectedBrowser.contentWindow.wrappedJSObject.twttr.util.supplant(A,dt));
                             }
                         }
                     });
                 }
-            }
-        );}
+            });
+
+
+            // TheJournal.ie SMI
+            // @TODO: Be smarter here and use this.jQuery rather than twittermediapreview.jquery
+            window.top.getBrowser().selectedBrowser.contentWindow.wrappedJSObject.twttr.mediaType('twttr.media.types.TheJournal',
+                {icon:'photo'
+                ,domain:'http://www.thejournal.ie/'
+                ,matchers:{media:/thejournal.ie\/([a-z\-A-Z0-9\.\/\?\=]+)/g}
+                ,process:function(A){
+                    this.data.src=this.slug;
+                    this.data.name=this.constructor._name;
+                    A()
+                }
+                ,render:function(B) {
+                    var headline = '';
+                    var photo = '';
+                    var photoCredit = '';
+                    var summary = '';
+                    var dt = this.data;
+
+                    var srcUrl = 'http://www.thejournal.ie/'+this.slug;
+                    twitterMediaPreview.jQuery.ajax({
+                        url: srcUrl,
+                        success: function(d) {
+                            var dommer = HTMLParser(d);
+                            headline = twitterMediaPreview.jQuery(dommer).find('.postMain h2').text();
+
+                            photo = twitterMediaPreview.jQuery(dommer).find('.img img').attr('src');
+                            photoCredit = twitterMediaPreview.jQuery(dommer).find('.source').text();
+
+                            // Try to pluck first 140 chars of story as summary.
+                            summary = twitterMediaPreview.jQuery(dommer).find('.text p').text().substring(0, 140);
+                            if(summary.length == 140)
+                            {
+                                // Indicate that summary is cropped
+                                summary += '...';
+                            }
+
+                            // If we haven't gotten a headline, chances are this is a dead page/non-previewable
+                            if(headline.length > 0)
+                            {
+                                var A='<div class=\'twitpic\'><strong class=\'tweet-text-large\'><a class="inline-media-image" href="'+srcUrl+'" target="_blank">'+headline+'</a></strong><strong><br />'+summary+'<br /><a class="inline-media-image" href="'+srcUrl+'" target="_blank"><img src=\''+photo+'\' /></a><br /><i>'+photoCredit+'</i></div>';
+                                twitterMediaPreview.jQuery(B, doc).append(window.top.getBrowser().selectedBrowser.contentWindow.wrappedJSObject.twttr.util.supplant(A,dt));
+                            }
+                        }
+                    });
+                }
+            });
+
+
+            // MyHome.ie SMI
+            // @TODO: Be smarter here and use this.jQuery rather than twittermediapreview.jquery
+            window.top.getBrowser().selectedBrowser.contentWindow.wrappedJSObject.twttr.mediaType('twttr.media.types.MyHome',
+                {icon:'photo'
+                ,domain:'http://www.myhome.ie/'
+                ,matchers:{media:/myhome.ie\/([a-zA-Z0-9\.\/\?\=\-]+)/g}
+                ,process:function(A){
+                    this.data.src=this.slug;
+                    this.data.name=this.constructor._name;
+                    A()
+                }
+                ,render:function(B) {
+                    var price = '';
+                    var address = '';
+                    var photo = '';
+                    var details = '';
+                    var dt = this.data;
+
+                    var srcUrl = 'http://www.myhome.ie/'+this.slug;
+                    twitterMediaPreview.jQuery.ajax({
+                        url: srcUrl,
+                        success: function(d) {
+                            var dommer = HTMLParser(d);
+                            address = twitterMediaPreview.jQuery(dommer).find('.brochureAddress').text();
+                            details = twitterMediaPreview.jQuery(dommer).find('.brochureDescription span').text();
+
+                            price = twitterMediaPreview.jQuery(dommer).find('.brochureDescription .brochurePrice').text();
+                            photo = twitterMediaPreview.jQuery(dommer).find('.mainPhoto img').attr('src');
+
+                           // If we haven't gotten an address, chances are this is a dead page/non-previewable
+                            if(address.length > 0)
+                            {
+                                var A='<div class=\'twitpic\'><strong><a class="inline-media-image" href="'+srcUrl+'" target="_blank">'+address+'</a><br />'+price+' '+details+'<br /><a class="inline-media-image" href="'+srcUrl+'" target="_blank"><img src=\''+photo+'\' /></a></div>';
+                                twitterMediaPreview.jQuery(B, doc).append(window.top.getBrowser().selectedBrowser.contentWindow.wrappedJSObject.twttr.util.supplant(A,dt));
+                            }
+                        }
+                    });
+                }
+            });
+
+        }
     };
 }();
 
